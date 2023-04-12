@@ -28,13 +28,10 @@ There are several main usages you may be interested in:
 
 ## How to use :man_technologist:
 
-1.
-
 ```
 python -m app
+open http://127.0.0.1/5000
 ```
-
-2. Open your favorite browser and go to "localhost:5000"
 
 ## Debug :bug:
 
