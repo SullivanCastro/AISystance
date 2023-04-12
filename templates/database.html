@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SystraAI Machine Learning App</title>
+    </head>
+
+    <body>
+        <form name="form" method="POST" style="text-align: center;">
+            <br>
+            Sepal Length: <input type="number" name="SepalLength" placeholder="Enter the sepal length in cm" required/>
+            <br><br>
+            Sepal Width: <input type="number" name="SepalWidth" placeholder="Enter the sepal width in cm" required/>
+            <br><br>
+            Petal Length: <input type="number" name="PetalLength" placeholder="Enter the petal length in cm" required/>
+            <br><br>
+            Petal Width: <input type="number" name="PetalWidth" placeholder="Enter the petal width in cm" required/>
+            <br><br>
+            Flower Name: <select name="FlowerName" placeholder="Choose the name of the flower" required>
+                            <option value="setosa">Setosa</option>
+                            <option value="versicolor">Versicolor</option>
+                            <option value="virginica">Virginica</option>
+                        </select>
+            <br><br>
+            <button type="submit" name="submit" value="submit">Add to the database</button>
+        </form>
+        <p style="text-align: center;">{{ output }}</p>
+        <p style="text-align: center;">Précision du modèle: {{ accuracy }}</p>
+    </body>
+</html>
