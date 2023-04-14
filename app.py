@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect
 from models.model import int_to_flower, flower_to_int, fit_model
 import pandas as pd
 import joblib
@@ -6,10 +6,16 @@ import joblib
 
 # Declare a Flask app
 app = Flask(__name__)
-
-
-############################################# HOME PAGE #############################################
+################################################# HOME PAGE #################################################
 @app.route('/', methods=['GET', 'POST'])
+def loggin():
+    if request.method == 'POST':
+        return redirect("index.html")
+    else:
+        return render_template("home.html")
+
+############################################# RANDOM FOREST PAGE #############################################
+@app.route('/index.html', methods=['GET', 'POST'])
 def predict():
     """
     The predict function receives the information through the form. Then the model makes a prediction
@@ -52,6 +58,7 @@ def add_to_database():
                 'PW': request.form.get("PetalWidth"),
                 'FN': request.form.get("FlowerName")
             }
+            print(new_element)
 
             # Create a DataFrame with the same column than the database
             database = database.append(new_element, ignore_index=True)
