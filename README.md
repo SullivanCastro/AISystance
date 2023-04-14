@@ -43,7 +43,7 @@ open http://127.0.0.1/5000
 ### Prediction page
 ![Prediction_page](demo/index.png)
 
-### Prediction page
+### Database page
 ![Database_page](demo/database.png)
 
 ## Debug :bug:
