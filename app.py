@@ -6,6 +6,8 @@ import joblib
 
 # Declare a Flask app
 app = Flask(__name__)
+
+
 ################################################# HOME PAGE #################################################
 @app.route('/', methods=['GET', 'POST'])
 def loggin():
@@ -13,6 +15,7 @@ def loggin():
         return redirect("index.html")
     else:
         return render_template("home.html")
+
 
 ############################################# RANDOM FOREST PAGE #############################################
 @app.route('/index.html', methods=['GET', 'POST'])
@@ -47,18 +50,18 @@ def predict():
 def add_to_database():
     # Load the database
     database = pd.read_pickle("models/database.pkl")
+    SL, SW, PL, PW, FN = database.columns
 
     if request.method == "POST":
         try:
             # Get values through input bars and initiate the new element
             new_element = {
-                'SL': request.form.get("SepalLength"),
-                'SW': request.form.get("SepalWidth"),
-                'PL': request.form.get("PetalLength"),
-                'PW': request.form.get("PetalWidth"),
-                'FN': request.form.get("FlowerName")
+                SL: request.form.get("SepalLength"),
+                SW: request.form.get("SepalWidth"),
+                PL: request.form.get("PetalLength"),
+                PW: request.form.get("PetalWidth"),
+                FN: request.form.get("FlowerName")
             }
-            print(new_element)
 
             # Create a DataFrame with the same column than the database
             database = database.append(new_element, ignore_index=True)
@@ -81,6 +84,7 @@ def add_to_database():
 
     # Update the page
     return render_template("database.html", output=prediction, accuracy=accuracy)
+
 
 # Running the app
 if __name__ == '__main__':
