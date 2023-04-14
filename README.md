@@ -37,6 +37,14 @@ There are several main usages you may be interested in:
 python -m app
 open http://127.0.0.1/5000
 ```
+### Homepage
+![Login page](demo/home.png)
+
+### Prediction page
+![Prediction_page](demo/index.png)
+
+### Database page
+![Database_page](demo/database.png)
 
 ## Debug :bug:
 
