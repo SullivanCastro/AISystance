@@ -2,10 +2,11 @@
 <html>
     <head>
         <title>SystraAI Machine Learning App</title>
+        <link rel="stylesheet" href="../static/style.css" type="text/css">
     </head>
 
-    <body>
-        <form name="form" method="POST" style="text-align: center;">
+    <body class="database_background">
+        <form name="form" method="POST" class="database_form">
             <br>
             Sepal Length: <input type="number" name="SepalLength" placeholder="Enter the sepal length in cm" required/>
             <br><br>
@@ -22,8 +23,9 @@
                         </select>
             <br><br>
             <button type="submit" name="submit" value="submit">Add to the database</button>
+            <p style="text-align: center;">{{ output }}</p>
+            <p style="text-align: center;">Précision du modèle: {{ accuracy }}</p>
         </form>
-        <p style="text-align: center;">{{ output }}</p>
-        <p style="text-align: center;">Précision du modèle: {{ accuracy }}</p>
+
     </body>
 </html>

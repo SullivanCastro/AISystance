@@ -2,11 +2,12 @@
 <html>
     <head>
         <title>SystraAI Machine Learning App</title>
+        <link rel="stylesheet" href="../static/style.css" type="text/css">
     </head>
 
-    <body>
+    <body class="index_background">
         <a href="database.html">Add an element to the database</a>
-        <form name="form" method="POST" style="text-align: center;">
+        <form name="form" method="POST" class="random_forest_form">
             <br>
             Sepal Length: <input type="number" name="SepalLength" placeholder="Enter the sepal length in cm" required/>
             <br><br>
@@ -17,7 +18,7 @@
             Petal Width: <input type="number" name="PetalWidth" placeholder="Enter the petal width in cm" required/>
             <br><br>
             <button type="submit" name="submit" value="submit">Calculus</button>
+            <p>{{ output }}</p>
         </form>
-        <p style="text-align: center;">{{ output }}</p>
     </body>
 </html>
