@@ -35,6 +35,7 @@ def fit_model(database, path):
 
     return accuracy
 
+
 if __name__ == "__main__":
     database = pd.read_pickle("./database.pkl")
     print(f"Précision du modèle : {fit_model(database, 'model.pkl')}")
