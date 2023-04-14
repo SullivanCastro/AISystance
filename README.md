@@ -1,6 +1,11 @@
 # AISystance
 Mission Junior Entreprise : PEP x Systra
 
+## What's next ? :grey_question:
+- Even if the login page is finished, I still have to do the authentication system
+- I haven't made the KNN algorithm but it's not a challenge yet
+- I have to make a nav bar to clean the design of the pages
+
 ## Installation :construction_worker:
 
 ### Installation with pip
