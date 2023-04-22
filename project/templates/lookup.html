@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SystraAI Machine Learning App</title>
+        <link rel="stylesheet" href="../static/style.css" type="text/css">
+    </head>
+
+    <body class="index_background">
+        <nav class="navbar">
+          <div class="navbar-logo">
+            <img src="../static/logo.png" alt="Logo">
+          </div>
+          <ul class="navbar-tabs">
+            <li><a href="index.html">Make a prediction</a></li>
+            <li><a href="database.html">Add an element to the database</a></li>
+            <li><a href="lookup.html">See the dataset</a></li>
+            <li><a href="logout">Log out</a></li>
+          </ul>
+        </nav>
+
+        <table>
+        {{ data|safe }}
+        </table>
+    </body>
+</html>
