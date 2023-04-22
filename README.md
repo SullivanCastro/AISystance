@@ -38,17 +38,17 @@ export FLASK_DEBUG=1
 flask run
 ```
 ### Homepage
-![Login page](project/demo/login.png)
+![Login page](demo/login.png)
 
 ### Sign up page
-![Sign up page](project/demo/signup.png)
+![Sign up page](demo/signup.png)
 
 ### Prediction page
-![Prediction_page](project/demo/prediction.png)
+![Prediction_page](demo/prediction.png)
 
 ### Database page
-![Database_page](project/demo/modify_database.png)
-![Database_page](project/demo/see_database.png)
+![Database_page](demo/modify_database.png)
+![Database_page](demo/see_database.png)
 
 ## Login system and privileges :unlock:
 
@@ -56,11 +56,15 @@ The login system works by privilege system, not all users have the same access:
     -Admin: they have access to all pages, from machine learning to database modification.
     -Data: they only have access to the database visualization but cannot make predictions or add new elements.
 
-![Admin use](project/demo/admin_use.gif)
+<p>
+    <img src="demo/admin_use.gif" alt="admin use"></a>
+</p>
 
 The navigation bars are not the same for both and the pages are protected preventing a malicious user from going through the URL to access the hidden content.
 
-![Page protection](project/demo/data_use.gif)
+<p>
+    <img src="demo/data_use.gif" alt="page safety"></a>
+</p>
 
 ## Debug :bug:
 
