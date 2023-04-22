@@ -57,13 +57,13 @@ The login system works by privilege system, not all users have the same access:
 -   Data: they only have access to the database visualization but cannot make predictions or add new elements.
 
 <p>
-    <img src="demo/admin_use.gif" alt="admin use"></a>
+    <img src="demo/admin_use.gif" alt="admin use">
 </p>
 
 The navigation bars are not the same for both and the pages are protected preventing a malicious user from going through the URL to access the hidden content.
 
 <p>
-    <img src="demo/data_use.gif" alt="page safety"></a>
+    <img src="demo/data_use.gif" alt="page safety">
 </p>
 
 ## Debug :bug:
