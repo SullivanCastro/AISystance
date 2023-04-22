@@ -53,8 +53,8 @@ flask run
 ## Login system and privileges :unlock:
 
 The login system works by privilege system, not all users have the same access:
-    -Admin: they have access to all pages, from machine learning to database modification.
-    -Data: they only have access to the database visualization but cannot make predictions or add new elements.
+-   Admin: they have access to all pages, from machine learning to database modification.
+-   Data: they only have access to the database visualization but cannot make predictions or add new elements.
 
 <p>
     <img src="demo/admin_use.gif" alt="admin use"></a>
