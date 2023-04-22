@@ -2,9 +2,7 @@
 Mission Junior Entreprise : PEP x Systra
 
 ## What's next ? :grey_question:
-- Even if the login page is finished, I still have to do the authentication system
 - I haven't made the KNN algorithm but it's not a challenge yet
-- I have to make a nav bar to clean the design of the pages
 
 ## Installation :construction_worker:
 
@@ -29,22 +27,28 @@ There are several main usages you may be interested in:
 
 1. Make predictions
 2. Fetch the nearest neighbors 
-3. Modify the database and fit the model
+3. Look up the dataset
+4. Modify the database and fit the model
 
 ## How to use :man_technologist:
 
 ```
-python -m app
-open http://127.0.0.1/5000
+export FLASK_APP=project
+export FLASK_DEBUG=1
+flask run
 ```
 ### Homepage
-![Login page](demo/home.png)
+![Login page](project/demo/login.png)
+
+### Sign up page
+![Sign up page](project/demo/signup.png)
 
 ### Prediction page
-![Prediction_page](demo/index.png)
+![Prediction_page](project/demo/prediction.png)
 
 ### Database page
-![Database_page](demo/database.png)
+![Database_page](project/demo/modify_database.png)
+![Database_page](project/demo/see_database.png)
 
 ## Debug :bug:
 
