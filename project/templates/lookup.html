@@ -20,8 +20,20 @@
           </ul>
         </nav>
 
+        <form method="POST" class="database_query">
+            <h3>Query the database</h3>
+            <div class="query">
+              Flower Name: <select name="FlowerName" placeholder="Choose the name of the flower">
+                              <option value="setosa">Setosa</option>
+                              <option value="versicolor">Versicolor</option>
+                              <option value="virginica">Virginica</option>
+                          </select>
+            </div>
+            <button type="filter" name="filter" value="filter">Rechercher</button>
+          </form>
+        
         <table>
-        {{ data|safe }}
+          {{ data|safe }}
         </table>
     </body>
 </html>

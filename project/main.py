@@ -91,6 +91,13 @@ def add_to_database():
 @main.route('/lookup.html', methods=['GET', 'POST'])
 @login_required
 def see_dataset():
-    df = pd.read_pickle('project/models_ml/database.pkl')
-    first_30_rows = df.head(30)
-    return render_template('lookup.html', data=first_30_rows.to_html())
+    if request.method=="POST":
+        flower_name = request.form.get("FlowerName")
+        df = pd.read_pickle('project/models_ml/database.pkl')
+        df = df[df['target'] == flower_name]
+        first_30_rows = df.head(30)
+        return render_template('lookup.html', data=first_30_rows.to_html())
+    if request.method=="GET":
+        df = pd.read_pickle('project/models_ml/database.pkl')
+        first_30_rows = df.head(30)
+        return render_template('lookup.html', data=first_30_rows.to_html())
