@@ -1,7 +1,7 @@
 from flask import Blueprint, request, render_template, redirect
 from flask_security import roles_required
 from flask_login import login_required, current_user
-from project.models_ml.model import int_to_flower, flower_to_int, fit_model
+from project.models_ml.model import fit_model
 import pandas as pd
 import joblib
 import os
@@ -23,6 +23,9 @@ def predict():
     The predict function receives the information through the form. Then the model makes a prediction
     and the pages is updated.
     """
+    # Load the database
+    database = joblib.load("project/models_ml/database.pkl")
+
     # If a form is submitted
     if request.method == "POST":
 
@@ -30,18 +33,23 @@ def predict():
         model = joblib.load("project/models_ml/model.pkl")
 
         # Get values through input bars
-        SL = request.form.get("SepalLength")
-        SW = request.form.get("SepalWidth")
-        PL = request.form.get("PetalLength")
-        PW = request.form.get("PetalWidth")
+        input_values = []
+        for column in database.columns:
+            input_value = float(request.form[column])
+            input_values.append(input_value)
+        print(input_values)
 
         # Get prediction
-        prediction = int_to_flower[model.predict([[SL, SW, PL, PW]])[0]]
+        prediction = model.predict([input_values])
 
     else:
         prediction = ""
 
-    return render_template("index.html", output=prediction)
+    # Submmit the columns names to the page
+    columns = database.columns.tolist()
+
+    # Update the page
+    return render_template("index.html", columns=columns, output=prediction)
 
 
 ############################################# DATABASE PAGE #############################################
@@ -50,18 +58,13 @@ def predict():
 @roles_required('admin')
 def add_to_database():
     # Load the database
-    database = pd.read_pickle("project/models_ml/database.pkl")
-    SL, SW, PL, PW, FN = database.columns
+    database = joblib.load("project/models_ml/database.pkl")
 
     if request.method == "POST":
         try:
             # Get values through input bars and initiate the new element
             new_element = {
-                SL: request.form.get("SepalLength"),
-                SW: request.form.get("SepalWidth"),
-                PL: request.form.get("PetalLength"),
-                PW: request.form.get("PetalWidth"),
-                FN: request.form.get("FlowerName")
+                column: request.form[column] for column in database.columns
             }
 
             # Create a DataFrame with the same column than the database
@@ -71,20 +74,23 @@ def add_to_database():
             database.to_pickle("project/models_ml/database.pkl")
 
             # Train the model and measure the new performance
-            accuracy = fit_model(database, "project/models_ml/model.pkl")
+            accuracy = fit_model(database, "project/models_ml/")
             prediction = "Added to the database"
 
         except Exception as e:
             print(f"The error {e} occured.")
             prediction = "An error occured"
-            accuracy = fit_model(database, "project/models_ml/model.pkl")
+            accuracy = fit_model(database, "project/models_ml/")
 
     else:
         prediction = "You haven't modified the dataset already."
-        accuracy = fit_model(database, "project/models_ml/model.pkl")
+        accuracy = fit_model(database, "project/models_ml/")
+
+    # Submmit the columns names to the page
+    columns = database.columns.tolist()
 
     # Update the page
-    return render_template("database.html", output=prediction, accuracy=accuracy)
+    return render_template("database.html", columns=columns, output=prediction, accuracy=accuracy)
 
 
 ################################################# LOOK UP #################################################
@@ -94,6 +100,7 @@ def see_dataset():
     if request.method=="POST":
         flower_name = request.form.get("FlowerName")
         df = pd.read_pickle('project/models_ml/database.pkl')
+        # pandas query
         df = df[df['target'] == flower_name]
         first_30_rows = df.head(30)
         return render_template('lookup.html', data=first_30_rows.to_html())
