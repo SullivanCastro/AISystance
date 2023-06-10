@@ -46,8 +46,9 @@ def create_app():
     # Create all tables
     with app.app_context():
         # uncomment if you want to reset the database
-        # db.drop_all()
+        db.drop_all()
         db.create_all()
+        # uncomment if you want to rest the database
         data_role = Role(name='data')
         admin_role = Role(name='admin')
         db.session.add(data_role)

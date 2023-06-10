@@ -8,11 +8,12 @@ body{
   justify-content: space-between;
   align-items: center;
   background-color: #f2f2f2;
+  width: 100%;
 }
 
 .navbar-logo img {
   height: 50px;
-    margin-left: 20px;
+  margin-left: 20px;
 }
 
 .navbar-tabs {

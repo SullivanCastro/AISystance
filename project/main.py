@@ -46,7 +46,7 @@ def predict():
         prediction = ""
 
     # Submmit the columns names to the page
-    columns = database.columns.tolist()
+    columns = database.select_dtypes(include=['object']).columns.tolist()
 
     # Update the page
     return render_template("index.html", columns=columns, output=prediction)
@@ -86,8 +86,8 @@ def add_to_database():
         prediction = "You haven't modified the dataset already."
         accuracy = fit_model(database, "project/models_ml/")
 
-    # Submmit the columns names to the page
-    columns = database.columns.tolist()
+    # Submit the columns names to the page
+    columns = database.select_dtypes(include=['object']).columns.tolist()
 
     # Update the page
     return render_template("database.html", columns=columns, output=prediction, accuracy=accuracy)
@@ -97,14 +97,55 @@ def add_to_database():
 @main.route('/lookup.html', methods=['GET', 'POST'])
 @login_required
 def see_dataset():
+    # Load the database
+    database = joblib.load("project/models_ml/database.pkl")
+
+    elements = []
+    selected = False
+
     if request.method=="POST":
-        flower_name = request.form.get("FlowerName")
-        df = pd.read_pickle('project/models_ml/database.pkl')
-        # pandas query
-        df = df[df['target'] == flower_name]
-        first_30_rows = df.head(30)
-        return render_template('lookup.html', data=first_30_rows.to_html())
+        selected_column = request.form['StringColumns']
+        selected = selected_column
+        filtered_element = request.form['FilteredElement']
+
+        # Effectuer la recherche dans la base de données en fonction des critères
+        if selected_column:
+            elements = database[selected_column].unique().tolist()
+            if filtered_element!='None':
+                filtered_data = database[database[selected_column] == filtered_element]
+            else:
+                filtered_data = database
+        else:
+            filtered_data = database
+
+        # Convertir les données filtrées en format HTML pour affichage
+        first_30_rows = filtered_data.head(30)
+    
     if request.method=="GET":
-        df = pd.read_pickle('project/models_ml/database.pkl')
-        first_30_rows = df.head(30)
-        return render_template('lookup.html', data=first_30_rows.to_html())
+        selected_column = request.args.get('StringColumns')
+        selected = selected_column
+        filtered_element = request.args.get('FilteredElement')
+       
+        # Effectuer la recherche dans la base de données en fonction des critères
+        if selected_column:
+            elements = database[selected_column].unique().tolist()
+            if filtered_element is not None:
+                filtered_data = database[database[selected_column] == filtered_element]
+            else:
+                filtered_data = database
+        else:
+            filtered_data = database
+
+        # Convertir les données filtrées en format HTML pour affichage
+        first_30_rows = filtered_data.head(30)
+    
+    # Submit the columns names to the page
+    columns = database.select_dtypes(include=['object']).columns.tolist() 
+
+    # Update the page
+    return render_template('lookup.html',
+                           selected=selected, 
+                           columns=columns, 
+                           elements=elements, 
+                           data=first_30_rows.to_html()
+                        )
