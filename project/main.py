@@ -145,7 +145,7 @@ def see_dataset():
         selected = selected_column
         filtered_element = request.form['FilteredElement']
 
-        # Effectuer la recherche dans la base de données en fonction des critères
+        # Query the database according the criteria
         if selected_column:
             elements = database[selected_column].unique().tolist()
             if filtered_element!='None':
@@ -155,7 +155,7 @@ def see_dataset():
         else:
             filtered_data = database
 
-        # Convertir les données filtrées en format HTML pour affichage
+        # Convert filtered data into html
         first_30_rows = filtered_data.head(30)
     
     if request.method=="GET":
@@ -163,7 +163,7 @@ def see_dataset():
         selected = selected_column
         filtered_element = request.args.get('FilteredElement')
        
-        # Effectuer la recherche dans la base de données en fonction des critères
+        # Query the database according the criteria
         if selected_column:
             elements = database[selected_column].unique().tolist()
             if filtered_element is not None:
@@ -173,7 +173,7 @@ def see_dataset():
         else:
             filtered_data = database
 
-        # Convertir les données filtrées en format HTML pour affichage
+        # Convert filtered data into html
         first_30_rows = filtered_data.head(30)
     
     # Submit the columns names to the page
