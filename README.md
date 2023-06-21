@@ -1,9 +1,6 @@
 # AISystance
 Mission Junior Entreprise : PEP x Systra
 
-## What's next ? :grey_question:
-- I haven't made the KNN algorithm but it's not a challenge yet
-
 ## Installation :construction_worker:
 
 ### Installation with pip
