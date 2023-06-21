@@ -45,14 +45,16 @@ def create_app():
 
     # Create all tables
     with app.app_context():
-        # uncomment if you want to reset the database
-        # db.drop_all()
+        # uncomment the two next lines if you want to reset the database
+        db.drop_all()
         db.create_all()
-        data_role = Role(name='data')
-        admin_role = Role(name='admin')
-        db.session.add(data_role)
-        db.session.add(admin_role)
-        db.session.commit()
+        existing_role = Role.query.filter_by(name='data').first()
+        if existing_role is None:
+            data_role = Role(name='data')
+            admin_role = Role(name='admin')
+            db.session.add(data_role)
+            db.session.add(admin_role)
+            db.session.commit()
 
     # Blueprint for auth routes in our app
     from .auth import auth as auth_blueprint

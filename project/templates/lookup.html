@@ -3,6 +3,41 @@
     <head>
         <title>SystraAI Machine Learning App</title>
         <link rel="stylesheet" href="../static/style.css" type="text/css">
+        <script>
+          document.addEventListener('DOMContentLoaded', function() {
+            var stringColumnsSelect = document.getElementById('StringColumns');
+            var stringSelectElement = document.getElementById('FilteredElement'); 
+            var form = document.getElementById("form");
+
+            stringSelectElement.addEventListener('change', function() {
+              var selectedValue = this.value;
+              var url = window.location.href;
+              var params = new URLSearchParams(window.location.search);
+
+              // Mettre à jour le paramètre FilteredElement
+              params.set('FilteredElement', encodeURIComponent(selectedValue));
+
+              // Supprimer les doublons du paramètre FilteredElement
+              var filteredElements = params.getAll('FilteredElement');
+              if (filteredElements.length > 1) {
+                filteredElements.shift(); // Supprimer le premier élément
+                params.set('FilteredElement', filteredElements);
+              }
+
+              // Reconstruire l'URL avec les paramètres mis à jour
+              var redirectUrl = url.split('?')[0] + '?' + params.toString();
+
+              window.location.href = redirectUrl;
+            });
+
+            stringColumnsSelect.addEventListener('change', function() {
+              var selectedValue = this.value;
+              var redirectUrl = window.location.origin + window.location.pathname + '?StringColumns=' + encodeURIComponent(selectedValue);
+
+              window.location.href = redirectUrl;
+            });
+          });
+      </script>
     </head>
 
     <body class="index_background">
@@ -13,6 +48,7 @@
           <ul class="navbar-tabs">
               {% if current_user.has_role('admin') %}
                   <li><a href="index.html">Make a prediction</a></li>
+                  <li><a href="knn.html">Find a neighbor</a></li>
                   <li><a href="database.html">Add an element to the database</a></li>
                 {% endif %}
             <li><a href="lookup.html">See the dataset</a></li>
@@ -20,8 +56,33 @@
           </ul>
         </nav>
 
+        <form method="POST" class="database_query" id="form">
+            <h3>Query the database</h3>
+            <div class="query">
+              <select id="StringColumns" placeholder="Choose the column to filter">
+                <option value="None">None</option>
+                {% for column in columns %}
+                  {% if column == selected %}
+                    <option value="{{ column }}" selected>{{ column }}</option>
+                  {% else %}
+                    <option value="{{ column }}">{{ column }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+              <select id="FilteredElement" placeholder="Choose the element to filter">
+                <option value="None">None</option>
+                {% if selected %}
+                    {% for choice in elements %}
+                        <option value="{{ choice }}">{{ choice }}</option>
+                    {% endfor %}
+                {% endif %}
+              </select>
+            </div>
+            <button type="submit" name="filter" value="filter">Rechercher</button>
+        </form>
+        
         <table>
-        {{ data|safe }}
+          {{ data|safe }}
         </table>
     </body>
 </html>

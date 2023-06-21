@@ -24,4 +24,3 @@ class User(UserMixin, db.Model):
         Check if the User has the role
         """
         return role in [r.name for r in self.roles]
-

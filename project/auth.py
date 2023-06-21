@@ -15,12 +15,11 @@ def login():
         remember = True if request.form.get('remember') else False
 
         user = User.query.filter_by(id=id).first()
-        print(user.roles[0].__dict__)
 
         # check if the user actually exists
         # take the user-supplied password, hash it, and compare it to the hashed password in the database
         if not user or not check_password_hash(user.password, password):
-            return redirect("login.html")  # if the user doesn't exist or password is wrong, reload the page
+            return render_template("login.html")  # if the user doesn't exist or password is wrong, reload the page
 
         # if the above check passes, then we know the user has the right credentials
         login_user(user, remember=remember)
