@@ -9,33 +9,33 @@
             var stringSelectElement = document.getElementById('FilteredElement'); 
             var form = document.getElementById("form");
 
-            stringSelectElement.addEventListener('change', function() {
-              var selectedValue = this.value;
-              var url = window.location.href;
-              var params = new URLSearchParams(window.location.search);
-
-              // Mettre à jour le paramètre FilteredElement
-              params.set('FilteredElement', encodeURIComponent(selectedValue));
-
-              // Supprimer les doublons du paramètre FilteredElement
-              var filteredElements = params.getAll('FilteredElement');
-              if (filteredElements.length > 1) {
-                filteredElements.shift(); // Supprimer le premier élément
-                params.set('FilteredElement', filteredElements);
-              }
-
-              // Reconstruire l'URL avec les paramètres mis à jour
-              var redirectUrl = url.split('?')[0] + '?' + params.toString();
-
-              window.location.href = redirectUrl;
-            });
-
             stringColumnsSelect.addEventListener('change', function() {
               var selectedValue = this.value;
               var redirectUrl = window.location.origin + window.location.pathname + '?StringColumns=' + encodeURIComponent(selectedValue);
-
               window.location.href = redirectUrl;
             });
+
+            // stringSelectElement.addEventListener('change', function() {
+            //   var selectedValue = this.value;
+            //   var url = window.location.href;
+            //   var params = new URLSearchParams(window.location.search);
+
+            //   // Mettre à jour le paramètre FilteredElement
+            //   params.set('FilteredElement', encodeURIComponent(selectedValue));
+
+            //   // Supprimer les doublons du paramètre FilteredElement
+            //   var filteredElements = params.getAll('FilteredElement');
+            //   if (filteredElements.length > 1) {
+            //     filteredElements.shift(); // Supprimer le premier élément
+            //     params.set('FilteredElement', filteredElements);
+            //   }
+
+            //   // Reconstruire l'URL avec les paramètres mis à jour
+            //   var redirectUrl = url.split('?')[0] + '?' + params.toString();
+
+            //   window.location.href = redirectUrl;
+            // });
+            
           });
       </script>
     </head>
@@ -56,30 +56,41 @@
           </ul>
         </nav>
 
-        <form method="POST" class="database_query" id="form">
-            <h3>Query the database</h3>
-            <div class="query">
-              <select id="StringColumns" placeholder="Choose the column to filter">
-                <option value="None">None</option>
-                {% for column in columns %}
-                  {% if column == selected %}
-                    <option value="{{ column }}" selected>{{ column }}</option>
-                  {% else %}
-                    <option value="{{ column }}">{{ column }}</option>
-                  {% endif %}
-                {% endfor %}
-              </select>
-              <select id="FilteredElement" placeholder="Choose the element to filter">
-                <option value="None">None</option>
-                {% if selected %}
-                    {% for choice in elements %}
-                        <option value="{{ choice }}">{{ choice }}</option>
-                    {% endfor %}
-                {% endif %}
-              </select>
-            </div>
-            <button type="submit" name="filter" value="filter">Rechercher</button>
-        </form>
+        <form method="POST" class="database_query" id="form" name="form">
+          <h3>Query the database</h3>
+          <select id="StringColumns" name="StringColumns" placeholder="Choose the column to filter">
+            <option value="None">None</option>
+            {% for column in string_columns %}
+              {% if column == selected_string_column %}
+                <option value="{{ column }}" id="{{ column }}" name="{{ column }}" selected>{{ column }}</option>
+              {% else %}
+                <option value="{{ column }}" id="{{ column }}" name="{{ column }}">{{ column }}</option>
+              {% endif %}
+            {% endfor %}
+          </select>
+          <select id="FilteredElement" name="FilteredElement" placeholder="Choose the element to filter">
+            <option value="None">None</option>
+            {% if selected_string_column %}
+              {% for choice in elements %}
+                <option value="{{ choice }}">{{ choice }}</option>
+              {% endfor %}
+            {% endif %}
+          </select>
+          <br/>
+          <select id="NumColumns" name="NumColumns" placeholder="Choose the column to filter">
+            <option value="None">None</option>
+            {% for column in num_columns %}
+              {% if column == selected_num_column %}
+                <option value="{{ column }}" id="{{ column }}" name="{{ column }}" selected>{{ column }}</option>
+              {% else %}
+                <option value="{{ column }}" id="{{ column }}" name="{{ column }}">{{ column }}</option>
+              {% endif %}
+            {% endfor %}
+          </select>
+          <input type="number" id="LowerBound" name="LowerBound" placeholder="lower bound" style="width: 100px;" />
+          <input type="number" id="UpperBound" name="UpperBound" placeholder="upper bound" style="width: 100px;" />
+          <button type="submit" name="submit" value="submit">Rechercher</button>
+        </form>        
         
         <table>
           {{ data|safe }}

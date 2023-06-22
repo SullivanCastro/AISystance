@@ -25,6 +25,10 @@ def predict():
     """
     # Load the database
     database = joblib.load("project/models_ml/database.pkl")
+    prediction = ""
+
+    # Submit the columns names to the page
+    columns = database.columns[:-1].tolist()
 
     # If a form is submitted
     if request.method == "POST":
@@ -34,19 +38,12 @@ def predict():
 
         # Get values through input bars
         input_values = []
-        for column in database.columns:
+        for column in columns:
             input_value = float(request.form[column])
             input_values.append(input_value)
-        print(input_values)
 
         # Get prediction
         prediction = model.predict([input_values])
-
-    else:
-        prediction = ""
-
-    # Submmit the columns names to the page
-    columns = database.select_dtypes(include=['object']).columns.tolist()
 
     # Update the page
     return render_template("index.html", columns=columns, output=prediction)
@@ -71,10 +68,9 @@ def neighbor():
 
         # Get values through input bars
         input_values = []
-        for column in database.columns:
+        for column in database[:-1].columns:
             input_value = float(request.form[column])
             input_values.append(input_value)
-        print(input_values)
 
         # Get prediction
         prediction = model.predict([input_values])
@@ -83,7 +79,7 @@ def neighbor():
         prediction = ""
 
     # Submmit the columns names to the page
-    columns = database.select_dtypes(include=['object']).columns.tolist()
+    columns = database.columns[:-1].tolist()
 
     # Update the page
     return render_template("index.html", columns=columns, output=prediction)
@@ -124,7 +120,7 @@ def add_to_database():
         accuracy = fit_random_forest(database, "project/models_ml/")
 
     # Submit the columns names to the page
-    columns = database.select_dtypes(include=['object']).columns.tolist()
+    columns = database.columns.tolist()
 
     # Update the page
     return render_template("database.html", columns=columns, output=prediction, accuracy=accuracy)
@@ -138,51 +134,50 @@ def see_dataset():
     database = joblib.load("project/models_ml/database.pkl")
 
     elements = []
-    selected = False
+    selected_string_column = False
+    selected_num_column = False
+    data = database
 
     if request.method=="POST":
-        selected_column = request.form['StringColumns']
-        selected = selected_column
-        filtered_element = request.form['FilteredElement']
+        selected_string_column = request.form.get('StringColumns')
+        selected_num_column = request.form.get('NumColumns')
+        filtered_string_element = request.form.get('FilteredElement')
+        lower_bound = request.form.get('LowerBound')
+        upper_bound = request.form.get('UpperBound')
 
-        # Query the database according the criteria
-        if selected_column:
-            elements = database[selected_column].unique().tolist()
-            if filtered_element!='None':
-                filtered_data = database[database[selected_column] == filtered_element]
-            else:
-                filtered_data = database
-        else:
-            filtered_data = database
+        # Query the database according the string criteria
+        if selected_string_column != 'None':
+            elements = database[selected_string_column].unique().tolist()
+            if filtered_string_element!='None':
+                data = data[data[selected_string_column] == filtered_string_element]
+
+        # Query the database according the numerical criteria
+        if selected_num_column!='None':
+            elements = database[selected_num_column].unique().tolist()
+            if lower_bound!='' and upper_bound!='':
+                data = data[(data[selected_num_column] >= float(lower_bound)) & (database[selected_num_column] <= float(upper_bound))]
+            
 
         # Convert filtered data into html
-        first_30_rows = filtered_data.head(30)
+        data = data
     
     if request.method=="GET":
-        selected_column = request.args.get('StringColumns')
-        selected = selected_column
-        filtered_element = request.args.get('FilteredElement')
-       
-        # Query the database according the criteria
-        if selected_column:
-            elements = database[selected_column].unique().tolist()
-            if filtered_element is not None:
-                filtered_data = database[database[selected_column] == filtered_element]
-            else:
-                filtered_data = database
-        else:
-            filtered_data = database
+        selected_string_column = request.args.get('StringColumns')
+        if selected_string_column is not None:
+            elements = data[selected_string_column].unique().tolist()
 
-        # Convert filtered data into html
-        first_30_rows = filtered_data.head(30)
-    
+
+
     # Submit the columns names to the page
-    columns = database.select_dtypes(include=['object']).columns.tolist() 
+    string_columns = database.select_dtypes(include=['object']).columns.tolist() 
+    num_columns = database.select_dtypes(include=['float64', 'int64']).columns.tolist()
 
     # Update the page
     return render_template('lookup.html',
-                           selected=selected, 
-                           columns=columns, 
+                           selected_string_column=selected_string_column,
+                           selected_num_column=selected_num_column, 
+                           string_columns=string_columns, 
+                           num_columns=num_columns,
                            elements=elements, 
-                           data=first_30_rows.to_html()
+                           data=data.to_html()
                         )

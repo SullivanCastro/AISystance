@@ -19,18 +19,18 @@
           </ul>
         </nav>
 
-        <form name="form" method="POST" class="database_form">
-          <h3>Random Forest Prediction</h3>
-      
-          {% for column in columns %}
+      <form name="form" method="POST" class="database_form" style="top: 230%">
+        <h3>Random Forest Prediction</h3>
+    
+        {% for column in columns %}
           <br>
-          {{ column }}: <input type="number" name="{{ column }}" placeholder="Enter the value for {{ column }}" required/>
-          {% endfor %}
-      
-          <br><br>
-          <button type="submit" name="submit" value="submit">Calculus</button>
-          <p>{{ output }}</p>
-      </form>
+          <p>{{ column }}:</p> <input type="number" id="{{ column }}" name="{{ column }}" placeholder="Enter the value for {{ column }}" required/>
+        {% endfor %}
+    
+        <br><br>
+        <button type="submit" name="submit" value="submit">Calculus</button>
+        <p>{{ output }}</p>
+    </form>
       
     </body>
 </html>

@@ -46,8 +46,8 @@ def create_app():
     # Create all tables
     with app.app_context():
         # uncomment the two next lines if you want to reset the database
-        db.drop_all()
-        db.create_all()
+        # db.drop_all()
+        # db.create_all()
         existing_role = Role.query.filter_by(name='data').first()
         if existing_role is None:
             data_role = Role(name='data')
